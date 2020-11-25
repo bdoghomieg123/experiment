@@ -1,8 +1,6 @@
 praw.ini
 posts.docx
-posts.docx
-demo.py
 demo.py
 __pycache__/common.cpython-39.pyc
-*.py
 *.pyc
+Words/

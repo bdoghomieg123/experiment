@@ -23,6 +23,10 @@ y = 0
 #Example line: subs_to_ignore = ['funny' , 'pics']
 subs_to_ignore = []
 
+
+
+
+
 while True:
     for submission in subreddit.new():
         sub = submission.subreddit
@@ -47,14 +51,12 @@ while True:
                 p.add_run(f"{submission.selftext}\nr/{sub}")
                 document.add_paragraph("-------------------------------")
                 document.save("posts.docx")
-                #print("This is a self post")
 
 
                 y+=1
 
-
+            #Determines if post is a self post/image post based on permalink
             elif "reddit.com/r" not in submission.url:
-                #print(submission.url)
                 postUrl = submission.url
                 formattedLink = f"www.reddit.com{submission.permalink}"
                 writeData = f"This is an image post. \n\n url here: {formattedLink[:-1]}"
@@ -70,12 +72,13 @@ while True:
 
 
         x+=1
-        if x % 100 == 0:
-            print(x)
-            time.sleep(3)
-            clear()
+        print(x)
 
-        elif x == 500:
+
+
+        #Function to end the program after X number of comments read
+        if x == 1000:
             playsound('alert.wav')
             print(f"Wrote to word document {y} times")
             exit(100)
+            count_docx("posts.docx")
