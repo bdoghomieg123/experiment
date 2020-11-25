@@ -27,16 +27,16 @@ while True:
         sub = submission.subreddit
         if sub.over18:
             continue
-            #print("NSFW")
+            print("NSFW")
 
         elif sub == "politics":
             continue
-            #print("politics")
+            print("politics")
 
         elif submission.is_self == True:
-            writeData = f"Post by:\n\n{submission.author}\n\n"
+            writeData = f"Post by: {submission.author}\n\n"
             p = document.add_paragraph(writeData)
-            p.add_run(f"{submission.title}\n\n").bold = True
+            p.add_run(f"Title: {submission.title}\n\n").bold = True
             p.add_run(f"{submission.selftext}\nr/{sub}")
             document.add_paragraph("-------------------------------")
             document.save("posts.docx")
@@ -50,7 +50,7 @@ while True:
             #print(submission.url)
             postUrl = submission.url
             formattedLink = f"www.reddit.com{submission.permalink}"
-            writeData = formattedLink[:-1]
+            writeData = f"This is an image post. \n\n url here: {formattedLink[:-1]}"
             document.add_paragraph(writeData)
             document.add_paragraph("-------------------------------")
             document.save("posts.docx")
@@ -61,8 +61,12 @@ while True:
             continue
 
         x+=1
-        print(x)
 
-        if x == 5:
+        if x % 100 == 0:
+            print(x)
+            time.sleep(3)
+            clear()
+
+        elif x == 1000:
             print(f"Wrote to word document {y} times")
-            exit()
+            exit(100)
