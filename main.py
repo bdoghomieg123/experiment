@@ -12,53 +12,57 @@ subreddit = reddit.subreddit("all")
 
 document = Document()
 document.save("posts.docx")
+
+#counter of how many times program has run
 x = 0
+
+#counter of how many times word document was written to
 y = 0
-self = False
+
+
+
+
 while True:
     for submission in subreddit.new():
-
-    #for submission in subreddit.controversial("day"):
-
         sub = submission.subreddit
         if sub.over18:
-            print("NSFW")
+            continue
+            #print("NSFW")
 
         elif sub == "politics":
-            print("politic")
+            continue
+            #print("politics")
 
         elif submission.is_self == True:
-            self = True
-            print("This is a self post")
+            writeData = f"Post by:\n\n{submission.author}\n\n"
+            p = document.add_paragraph(writeData)
+            p.add_run(f"{submission.title}\n\n").bold = True
+            p.add_run(f"{submission.selftext}\nr/{sub}")
+            document.add_paragraph("-------------------------------")
+            document.save("posts.docx")
+            #print("This is a self post")
+
+
+            y+=1
 
 
         elif "reddit.com/r" not in submission.url:
             #print(submission.url)
             postUrl = submission.url
-            #Eventually, you will simply add the post URL to the word doc
-            postPermaLink = f"reddit.com{submission.permalink}"
+            formattedLink = f"www.reddit.com{submission.permalink}"
+            writeData = formattedLink[:-1]
+            document.add_paragraph(writeData)
+            document.add_paragraph("-------------------------------")
+            document.save("posts.docx")
+
+            y+=1
 
         elif "snap" or "snapchat" in submission.title:
             continue
 
-        if x == 10:
-            if self == True:
-                writeData = f"Post by:{submission.author}\n{submission.title}\n{submission.selftext}\n{sub}\n\n"
-                print(writeData)
-                #document.add_paragraph(writeData)
-                #document.save("posts.docx")
-                #y += 1
+        x+=1
+        print(x)
 
-
-
-            else:
-                writeData = f"www.{postPermaLink}"
-                print(writeData)
-
-            document.add_paragraph(writeData)
-            document.save("posts.docx")
-            y += 1
-
-        elif x == 20:
+        if x == 5:
             print(f"Wrote to word document {y} times")
             exit()
